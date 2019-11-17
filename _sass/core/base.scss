@@ -1,0 +1,30 @@
+body {
+    background-color: #333;
+    color: #ddd;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+main {
+    background-color: #444;
+    padding: 1rem;
+}
+
+a {
+    color: #fc0;
+    text-decoration: none;
+    transition: all 0.25s;
+}
+
+a:hover {
+    color: #f90;
+}
+
+#feedbox {
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: 85px 65px 130px auto;
+  
+    @include media-breakpoint-only(xs) {
+      grid-template-columns: 130px auto;
+    }
+}
