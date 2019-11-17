@@ -1,4 +1,4 @@
-const ws = new WebSocket('wss://feed-dachau/feed:63409'),
+const ws = new WebSocket('wss://feed-dachau.de/feed:63409'),
   feedbox = document.getElementById('feedbox')
 
 ws.onmessage = message => {
