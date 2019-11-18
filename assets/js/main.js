@@ -1,9 +1,10 @@
-const ws = new WebSocket('wss://feed-dachau.de/feed:63409'),
+const ws = new WebSocket('ws://localhost:63409'),
   feedbox = document.getElementById('feedbox')
 
 ws.onmessage = message => {
-    const feed = JSON.parse(message.data)
-
+  const feedArray = JSON.parse(message.data)
+  const frag = document.createDocumentFragment()
+  feedArray.forEach(feed => {
     // Date
     const date = document.createElement('span')
     const feedDate = new Date(feed.date)
@@ -29,8 +30,10 @@ ws.onmessage = message => {
     link.href = feed.link
     link.textContent = feed.title
 
-    feedbox.insertBefore(link, feedbox.childNodes[0])
-    feedbox.insertBefore(source, feedbox.childNodes[0])
-    feedbox.insertBefore(time, feedbox.childNodes[0])
-    feedbox.insertBefore(date, feedbox.childNodes[0])
+    frag.insertBefore(link, frag.childNodes[0])
+    frag.insertBefore(source, frag.childNodes[0])
+    frag.insertBefore(time, frag.childNodes[0])
+    frag.insertBefore(date, frag.childNodes[0])
+  });
+  window.requestAnimationFrame(() => feedbox.insertBefore(frag, feedbox.childNodes[0]))
 }
