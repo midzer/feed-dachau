@@ -11,11 +11,11 @@ main {
 
 a {
     color: #fc0;
-    text-decoration: none;
     transition: all 0.25s;
 }
 
 a:hover {
+    text-decoration: none;
     color: #f90;
 }
 
