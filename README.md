@@ -1,7 +1,3 @@
-# jekyll-boilerplate
+# feed-dachau
 
-Minimal boilerplate for [Jekyll](https://jekyllrb.com/)
-
-* SASS/SCSS support
-* SEO optimized via `jekyll-seo-tag` plugin
-* only 5 includes to keep things basic
+Website for [Feed Dachau](https://feed-dachau.de/). Template based on [jekyll-boilerplate](https://github.com/midzer/jekyll-boilerplate). [feed-websocket](https://github.com/midzer/feed-websocket) is used as backend
