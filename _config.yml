@@ -27,6 +27,9 @@ markdown: kramdown
 permalink: pretty
 plugins:
   - jekyll-seo-tag
+sass:
+  style: compressed
+  sourcemap: never
 
 # SEO/Meta settings
 author: midzer
