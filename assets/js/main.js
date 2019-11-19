@@ -1,7 +1,26 @@
-const ws = new WebSocket('wss://feed-dachau.de/feed:63409'),
+function ping () {
+  ws.send('ping')
+  timeout = setTimeout(() => {
+    console.log('WebSocket connection closed. Please reload page')
+  }, 5000)
+}
+
+function pong () {
+  clearTimeout(timeout)
+}
+
+const ws = new WebSocket('ws://localhost:63409'),
   feedbox = document.getElementById('feedbox')
 
+let timeout
+
+ws.onopen = () => setInterval(ping, 30000)
+
 ws.onmessage = message => {
+  if (message.data === 'pong') {
+    pong()
+    return
+  }
   const feedArray = JSON.parse(message.data)
   const frag = document.createDocumentFragment()
   feedArray.forEach(feed => {
@@ -34,6 +53,6 @@ ws.onmessage = message => {
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
-  });
+  })
   window.requestAnimationFrame(() => feedbox.insertBefore(frag, feedbox.childNodes[0]))
 }
