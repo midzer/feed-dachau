@@ -23,6 +23,8 @@ a:hover {
     display: grid;
     grid-gap: 0.5rem;
     grid-template-columns: 85px 65px 130px auto;
+
+    min-height: 850px;
   
     @include media-breakpoint-only(xs) {
       grid-template-columns: 130px auto;
