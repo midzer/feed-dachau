@@ -9,7 +9,7 @@ function pong () {
   clearTimeout(timeout)
 }
 
-const ws = new WebSocket('ws://localhost:63409'),
+const ws = new WebSocket('wss://feed-dachau.de/api:63409'),
   feedbox = document.getElementById('feedbox')
 
 let timeout
