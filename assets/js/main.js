@@ -45,11 +45,19 @@ ws.onmessage = message => {
     source.textContent = hostname
 
     // Link
+    const linkContainer = document.createElement('div')
+    if (feedArray.length === 1) {
+      const badge = document.createElement('span')
+      badge.className = 'badge badge-secondary mr-1'
+      badge.textContent = 'NEU'
+      linkContainer.appendChild(badge)
+    }
     const link = document.createElement('a')
     link.href = feed.link
     link.textContent = feed.title
+    linkContainer.appendChild(link)
 
-    frag.insertBefore(link, frag.childNodes[0])
+    frag.insertBefore(linkContainer, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
