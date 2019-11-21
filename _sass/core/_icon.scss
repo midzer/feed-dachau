@@ -3,4 +3,9 @@
     height: 18px;
     vertical-align: sub;
     fill: currentColor;
+
+    &.icon--rss {
+        width: 25px;
+        height: 25px;
+    }
 }
