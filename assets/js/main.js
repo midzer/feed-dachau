@@ -9,6 +9,12 @@ function pong () {
   clearTimeout(timeout)
 }
 
+function disablePushButton (permission) {
+  if (permission === "granted") {
+    pushButton.disabled = true
+  }
+}
+
 const ws = new WebSocket('wss://feed-dachau.de/api:63409'),
   feedbox = document.getElementById('feedbox')
 
@@ -46,15 +52,24 @@ ws.onmessage = message => {
 
     // Link
     const linkContainer = document.createElement('div')
+    const link = document.createElement('a')
+    link.href = feed.link
+    link.textContent = feed.title
     if (feedArray.length === 1) {
+      // Show "NEU" badge
       const badge = document.createElement('span')
       badge.className = 'badge badge-secondary mr-1'
       badge.textContent = 'NEU'
       linkContainer.appendChild(badge)
+
+      // Show notification
+      if (Notification.permission === "granted") {
+        const options = {
+          body: `${hostname} | ${feed.title}`
+        }
+        const n = new Notification('Feed Dachau', options)
+      }
     }
-    const link = document.createElement('a')
-    link.href = feed.link
-    link.textContent = feed.title
     linkContainer.appendChild(link)
 
     frag.insertBefore(linkContainer, frag.childNodes[0])
@@ -64,3 +79,12 @@ ws.onmessage = message => {
   })
   window.requestAnimationFrame(() => feedbox.insertBefore(frag, feedbox.childNodes[0]))
 }
+// Push button
+const pushButton = document.getElementById('push-btn')
+pushButton.onclick = () => {
+  Notification.requestPermission().then(function(permission) {
+    disablePushButton(permission) 
+  })
+}
+
+disablePushButton(Notification.permission)
