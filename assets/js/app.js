@@ -43,9 +43,15 @@ ws.onmessage = message => {
 
     // Source
     const source = document.createElement('span')
-    const url = new URL(feed.link)
-    let hostname = url.hostname
-    if (url.hostname.startsWith('www.')) {
+    let hostname
+    if (feed.link) {
+      const url = new URL(feed.link)
+      hostname = url.hostname
+    }
+    else {
+      hostname = 'feed-dachau.de'
+    }
+    if (hostname.startsWith('www.')) {
       hostname = hostname.replace('www.', '')
     }
     source.textContent = hostname
