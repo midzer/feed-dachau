@@ -64,10 +64,11 @@ ws.onmessage = message => {
 
       // Show notification
       if (Notification.permission === "granted") {
-        const options = {
-          body: `${hostname} | ${feed.title}`
-        }
-        const n = new Notification('Feed Dachau', options)
+        navigator.serviceWorker.ready.then(registration => {
+          registration.showNotification('Feed Dachau', {
+            body: `${hostname} | ${feed.title}`
+          })
+        })
       }
     }
     linkContainer.appendChild(link)
@@ -86,5 +87,7 @@ pushButton.onclick = () => {
     disablePushButton(permission) 
   })
 }
-
 disablePushButton(Notification.permission)
+
+// Install Service Worker
+navigator.serviceWorker.register('sw.js')
