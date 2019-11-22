@@ -61,10 +61,13 @@ ws.onmessage = message => {
     const link = document.createElement('a')
     link.href = feed.link
     link.textContent = feed.title
+    link.dataset.toggle = 'tooltip'
+    link.dataset.placement = 'bottom'
+    link.title = feed.summary
     if (feedArray.length === 1) {
       // Show "NEU" badge
       const badge = document.createElement('span')
-      badge.className = 'badge badge-secondary mr-1'
+      badge.className = 'badge badge-secondary mr-2'
       badge.textContent = 'NEU'
       linkContainer.appendChild(badge)
 
@@ -79,12 +82,38 @@ ws.onmessage = message => {
     }
     linkContainer.appendChild(link)
 
+    // Collapse
+    if (feed.summary) {
+      const plusLink = document.createElement('a')
+      plusLink.className = 'badge badge-secondary ml-2'
+      plusLink.dataset.toggle = 'collapse'
+      let id = `${formattedDate}-${formattedTime}`
+      id = id.replace(/[\.:]+/g, '');
+      plusLink.href = `#collapse-${id}`
+      plusLink.role = 'button'
+      plusLink.setAttribute('aria-expanded', false)
+      plusLink.setAttribute('aria-controls', `#collapse-${id}`)
+      plusLink.textContent = '+'
+      const collapse = document.createElement('div')
+      collapse.className = 'collapse'
+      collapse.id = `collapse-${id}`
+      collapse.innerHTML = feed.summary
+      linkContainer.appendChild(plusLink)
+      linkContainer.appendChild(collapse)
+    }
+    // Append all to frag
     frag.insertBefore(linkContainer, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
   })
-  window.requestAnimationFrame(() => feedbox.insertBefore(frag, feedbox.childNodes[0]))
+  window.requestAnimationFrame(() => {
+    feedbox.insertBefore(frag, feedbox.childNodes[0])
+
+    // Initialize plusButtons
+    const plusButtons = Array.from(document.querySelectorAll('[data-toggle="collapse"]'))
+    plusButtons.forEach(button => new Collapse(button))
+  })
 }
 // Push button
 const pushButton = document.getElementById('push-btn')
