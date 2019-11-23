@@ -43,6 +43,7 @@ ws.onmessage = message => {
 
     // Source
     const source = document.createElement('span')
+    source.className = 'text-break'
     let hostname
     if (feed.link) {
       const url = new URL(feed.link)
