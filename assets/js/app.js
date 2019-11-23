@@ -75,8 +75,9 @@ ws.onmessage = message => {
       // Show notification
       if (Notification.permission === "granted") {
         navigator.serviceWorker.ready.then(registration => {
-          registration.showNotification('Feed Dachau', {
-            body: `${hostname} | ${feed.title}`
+          registration.showNotification('1 neuer Feed', {
+            body: `${hostname} | ${feed.title}`,
+            icon: '../../android-chrome-192x192.png',
           })
         })
       }
