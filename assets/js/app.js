@@ -1,7 +1,7 @@
 function ping () {
   ws.send('ping')
   timeout = setTimeout(() => {
-    console.log('WebSocket connection closed. Please reload page')
+    console.log('WebSocket connection closed. Please reload page.')
   }, 5000)
 }
 
