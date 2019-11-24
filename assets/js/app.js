@@ -15,6 +15,19 @@ function disablePushButton (permission) {
   }
 }
 
+function createSVG (icon) {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.classList.add('icon')
+  const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+  use.setAttributeNS(
+    'http://www.w3.org/1999/xlink',
+    'href', 
+    `/assets/icons/sprite.svg#${icon}`)
+  svg.appendChild(use)
+  
+  return svg
+}
+
 const ws = new WebSocket('wss://feed-dachau.de/api:63409'),
   feedbox = document.getElementById('feedbox')
 
@@ -95,7 +108,7 @@ ws.onmessage = message => {
       plusLink.role = 'button'
       plusLink.setAttribute('aria-expanded', false)
       plusLink.setAttribute('aria-controls', `#collapse-${id}`)
-      plusLink.textContent = '+'
+      plusLink.appendChild(createSVG('plus'))
       const collapse = document.createElement('div')
       collapse.className = 'collapse'
       collapse.id = `collapse-${id}`
@@ -107,7 +120,6 @@ ws.onmessage = message => {
     if (navigator.share) {
       const shareLink = document.createElement('a')
       shareLink.className = 'badge badge-secondary ml-2'
-      shareLink.textContent = 'TEILEN'
       shareLink.onclick = () => {
         navigator.share({
           title: feed.title,
@@ -116,19 +128,21 @@ ws.onmessage = message => {
         .then(() => console.log('Successful share'))
         .catch((error) => console.log('Error sharing', error))
       }
+      
+      shareLink.appendChild(createSVG('share-2'))
       linkContainer.appendChild(shareLink)
     }
     const facebookLink = document.createElement('a')
     facebookLink.className = 'badge badge-secondary ml-2'
-    facebookLink.textContent = 'FACEBOOK'
     facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${feed.link}`
-    facebookLink.rel= 'nofollow noopener'
+    facebookLink.rel = 'nofollow noopener'
+    facebookLink.appendChild(createSVG('facebook'))
     linkContainer.appendChild(facebookLink)
     const twitterLink = document.createElement('a')
     twitterLink.className = 'badge badge-secondary ml-2'
-    twitterLink.textContent = 'TWITTER'
     twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
-    twitterLink.rel= 'nofollow noopener'
+    twitterLink.rel = 'nofollow noopener'
+    twitterLink.appendChild(createSVG('twitter'))
     linkContainer.appendChild(twitterLink)
 
     // Append all to frag
