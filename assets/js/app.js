@@ -103,6 +103,34 @@ ws.onmessage = message => {
       linkContainer.appendChild(plusLink)
       linkContainer.appendChild(collapse)
     }
+    // Social share
+    if (navigator.share) {
+      const shareLink = document.createElement('a')
+      shareLink.className = 'badge badge-secondary ml-2'
+      shareLink.textContent = 'TEILEN'
+      shareLink.onclick = () => {
+        navigator.share({
+          title: feed.title,
+          url: feed.link
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error))
+      }
+      linkContainer.appendChild(shareLink)
+    }
+    const facebookLink = document.createElement('a')
+    facebookLink.className = 'badge badge-secondary ml-2'
+    facebookLink.textContent = 'FACEBOOK'
+    facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${feed.link}`
+    facebookLink.rel= 'nofollow noopener'
+    linkContainer.appendChild(facebookLink)
+    const twitterLink = document.createElement('a')
+    twitterLink.className = 'badge badge-secondary ml-2'
+    twitterLink.textContent = 'TWITTER'
+    twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
+    twitterLink.rel= 'nofollow noopener'
+    linkContainer.appendChild(twitterLink)
+
     // Append all to frag
     frag.insertBefore(linkContainer, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
