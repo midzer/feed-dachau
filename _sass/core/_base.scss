@@ -22,11 +22,11 @@ a:hover {
 #feedbox {
     display: grid;
     grid-gap: 0.5rem;
-    grid-template-columns: 85px 65px 130px auto;
+    grid-template-columns: 80px 62px 125px auto;
 
     min-height: 850px;
   
     @include media-breakpoint-only(xs) {
-      grid-template-columns: 130px auto;
+      grid-template-columns: 125px auto;
     }
 }
