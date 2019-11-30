@@ -97,24 +97,19 @@ ws.onmessage = message => {
     }
     linkContainer.appendChild(link)
 
-    // Collapse
+    // Plus button
+    let id = `${formattedDate}-${formattedTime}`
+    id = id.replace(/[\.:]+/g, '')
     if (feed.summary) {
       const plusLink = document.createElement('a')
       plusLink.className = 'badge badge-secondary ml-2'
       plusLink.dataset.toggle = 'collapse'
-      let id = `${formattedDate}-${formattedTime}`
-      id = id.replace(/[\.:]+/g, '');
       plusLink.href = `#collapse-${id}`
       plusLink.role = 'button'
       plusLink.setAttribute('aria-expanded', false)
       plusLink.setAttribute('aria-controls', `#collapse-${id}`)
       plusLink.appendChild(createSVG('plus'))
-      const collapse = document.createElement('div')
-      collapse.className = 'collapse'
-      collapse.id = `collapse-${id}`
-      collapse.innerHTML = feed.summary
       linkContainer.appendChild(plusLink)
-      linkContainer.appendChild(collapse)
     }
     // Social share
     if (navigator.share) {
@@ -145,6 +140,14 @@ ws.onmessage = message => {
     twitterLink.appendChild(createSVG('twitter'))
     linkContainer.appendChild(twitterLink)
 
+    // Collapse
+    if (feed.summary) {
+      const collapse = document.createElement('div')
+      collapse.className = 'collapse'
+      collapse.id = `collapse-${id}`
+      collapse.innerHTML = feed.summary
+      linkContainer.appendChild(collapse)
+    }
     // Append all to frag
     frag.insertBefore(linkContainer, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
