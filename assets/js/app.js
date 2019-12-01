@@ -105,8 +105,9 @@ ws.onmessage = message => {
       plusLink.className = 'badge badge-secondary ml-2'
       plusLink.dataset.toggle = 'collapse'
       plusLink.href = `#collapse-${id}`
-      plusLink.role = 'button'
+      plusLink.setAttribute('role', 'button')
       plusLink.setAttribute('aria-expanded', false)
+      plusLink.setAttribute('aria-label', 'Zusammenfassung anzeigen')
       plusLink.setAttribute('aria-controls', `#collapse-${id}`)
       plusLink.appendChild(createSVG('plus'))
       linkContainer.appendChild(plusLink)
@@ -115,6 +116,8 @@ ws.onmessage = message => {
     if (navigator.share) {
       const shareLink = document.createElement('a')
       shareLink.className = 'badge badge-secondary ml-2'
+      shareLink.setAttribute('role', 'button')
+      shareLink.setAttribute('aria-label', 'Beitrag teilen')
       shareLink.onclick = () => {
         navigator.share({
           title: feed.title,
@@ -131,12 +134,14 @@ ws.onmessage = message => {
     facebookLink.className = 'badge badge-secondary ml-2'
     facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${feed.link}`
     facebookLink.rel = 'nofollow noopener'
+    facebookLink.setAttribute('aria-label', 'Auf Facebook teilen')
     facebookLink.appendChild(createSVG('facebook'))
     linkContainer.appendChild(facebookLink)
     const twitterLink = document.createElement('a')
     twitterLink.className = 'badge badge-secondary ml-2'
     twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
     twitterLink.rel = 'nofollow noopener'
+    twitterLink.setAttribute('aria-label', 'Auf Twitter teilen')
     twitterLink.appendChild(createSVG('twitter'))
     linkContainer.appendChild(twitterLink)
 
