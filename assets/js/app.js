@@ -170,9 +170,7 @@ ws.onmessage = message => {
 // Push button
 const pushButton = document.getElementById('push-btn')
 pushButton.onclick = () => {
-  Notification.requestPermission().then(function(permission) {
-    disablePushButton(permission) 
-  })
+  Notification.requestPermission().then(permission => disablePushButton(permission))
 }
 disablePushButton(Notification.permission)
 
