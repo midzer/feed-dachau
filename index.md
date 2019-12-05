@@ -3,7 +3,7 @@
 # Edit theme's home layout instead if you wanna make some changes
 # See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 layout: default
-title: Dein Newsfeed der Stadt
+title: Der Newsfeed deiner Stadt
 ---
 
 <div id="feedbox"></div>
