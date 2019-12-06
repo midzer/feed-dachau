@@ -72,6 +72,8 @@ ws.onmessage = message => {
 
     // Link
     const linkContainer = document.createElement('div')
+    const linkHeading = document.createElement('h2')
+    linkHeading.className = 'h6 d-inline'
     const link = document.createElement('a')
     link.href = feed.link
     link.textContent = feed.title
@@ -95,7 +97,8 @@ ws.onmessage = message => {
         })
       }
     }
-    linkContainer.appendChild(link)
+    linkHeading.appendChild(link)
+    linkContainer.appendChild(linkHeading)
 
     // Plus button
     let id = `${formattedDate}-${formattedTime}`
