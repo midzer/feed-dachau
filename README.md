@@ -5,11 +5,12 @@ Landing page showing feed of local authorities, communities and news papers. Cus
 ## Requirements
 
 * Ruby
+* Bundler gem
 
 ## Development
 
 ```
-gem install
+bundle install
 bundle exec jekyll serve
 # => Now browse to http://localhost:4000
 ```
