@@ -22,7 +22,7 @@
 - url: https://jugendrat-dachau.de/feed/
 # Kunst
 - url: https://echoev.de/feed/
-- url: https://www.dachauerwasserturm.de/index.php?format=feed&type=rss
+# Dates in the future - url: https://www.dachauerwasserturm.de/index.php?format=feed&type=rss
 - url: http://freiemalgruppe-dachau.de/feed/
 # Landwirtschaft
 - url: https://www.wbv-dachau.de/index.php?format=feed&type=rss
@@ -38,7 +38,7 @@
 - url: http://www.fdp-dachau.de/feed/
 - url: http://ju-dah.de/feed/
 - url: https://www.spd-dachau.de/index.xml
-- url: https://www.ueb-dachau.de/rss/blog
+# No feed items - url: https://www.ueb-dachau.de/rss/blog
 - url: https://www.oedp-dachau.de/service/rss/feeds/oedp-blog-rss-feed/
 - url: https://wir-dachau.de/feed
 - url: https://gruene-dachau.de/?feed=rss2
