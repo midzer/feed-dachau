@@ -223,7 +223,7 @@ if ('serviceWorker' in navigator) {
     // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
     // See https://github.com/slightlyoff/ServiceWorker/issues/468
     navigator.serviceWorker.register('/sw.js').then(function (reg) {
-      console.log("service worker installed")
+      console.log('Service worker registered')
     }).catch(function (e) {
       console.error('Error during service worker registration, possibly cookies are blocked:', e)
     })
