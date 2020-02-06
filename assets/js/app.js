@@ -48,8 +48,8 @@ function handlePermission (permission) {
 function askNotificationPermission() {
   // function to actually ask the permissions
   // Let's check if the browser supports notifications
-  if (!"Notification" in window) {
-    console.log("This browser does not support notifications.");
+  if (!'Notification' in window) {
+    console.log('This browser does not support notifications.')
   }
   else {
     if (checkNotificationPromise()) {
@@ -57,7 +57,7 @@ function askNotificationPermission() {
     }
     else {
       Notification.requestPermission(function(permission) {
-        handlePermission(permission);
+        handlePermission(permission)
       })
     }
   }
@@ -123,8 +123,8 @@ ws.onmessage = message => {
       linkContainer.appendChild(badge)
 
       // Show notification
-      Notification.requestPermission(function(result) {
-        if (result === 'granted') {
+      if ('Notification' in window) {
+        if (Notification.permission === 'granted') {
           navigator.serviceWorker.ready.then(function(registration) {
             registration.showNotification('1 neuer Feed', {
               body: `${hostname} | ${feed.title}`,
@@ -132,7 +132,7 @@ ws.onmessage = message => {
             })
           })
         }
-      })
+      } 
     }
     linkHeading.appendChild(link)
     linkContainer.appendChild(linkHeading)
