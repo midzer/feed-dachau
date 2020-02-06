@@ -9,12 +9,6 @@ function pong () {
   clearTimeout(timeout)
 }
 
-function disablePushButton (permission) {
-  if (permission === "granted") {
-    pushButton.disabled = true
-  }
-}
-
 function createSVG (icon) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.classList.add('icon')
@@ -26,6 +20,47 @@ function createSVG (icon) {
   svg.appendChild(use)
   
   return svg
+}
+
+function checkNotificationPromise () {
+  try {
+    Notification.requestPermission().then();
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
+function handlePermission (permission) {
+  // Whatever the user answers, we make sure Chrome stores the information
+  if (!('permission' in Notification)) {
+    Notification.permission = permission;
+  }
+  // set the button to shown or hidden, depending on what the user answers
+  if (Notification.permission === 'denied' || Notification.permission === 'default') {
+    pushButton.disabled = false
+  }
+  else {
+    pushButton.disabled = true
+  }
+}
+
+function askNotificationPermission() {
+  // function to actually ask the permissions
+  // Let's check if the browser supports notifications
+  if (!"Notification" in window) {
+    console.log("This browser does not support notifications.");
+  }
+  else {
+    if (checkNotificationPromise()) {
+      Notification.requestPermission().then((permission) => handlePermission(permission))
+    }
+    else {
+      Notification.requestPermission(function(permission) {
+        handlePermission(permission);
+      })
+    }
+  }
 }
 
 const ws = new WebSocket('wss://feed-dachau.de/api:63409'),
@@ -88,14 +123,16 @@ ws.onmessage = message => {
       linkContainer.appendChild(badge)
 
       // Show notification
-      if (Notification.permission === "granted") {
-        navigator.serviceWorker.ready.then(registration => {
-          registration.showNotification('1 neuer Feed', {
-            body: `${hostname} | ${feed.title}`,
-            icon: '../../android-chrome-192x192.png',
+      Notification.requestPermission(function(result) {
+        if (result === 'granted') {
+          navigator.serviceWorker.ready.then(function(registration) {
+            registration.showNotification('1 neuer Feed', {
+              body: `${hostname} | ${feed.title}`,
+              icon: '../../android-chrome-192x192.png'
+            })
           })
-        })
-      }
+        }
+      })
     }
     linkHeading.appendChild(link)
     linkContainer.appendChild(linkHeading)
@@ -172,10 +209,8 @@ ws.onmessage = message => {
 }
 // Push button
 const pushButton = document.getElementById('push-btn')
-pushButton.onclick = () => {
-  Notification.requestPermission().then(permission => disablePushButton(permission))
-}
-disablePushButton(Notification.permission)
+pushButton.onclick = () => askNotificationPermission()
+handlePermission()
 
 // Install Service Worker
 navigator.serviceWorker.register('sw.js')
