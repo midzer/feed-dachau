@@ -210,7 +210,6 @@ ws.onmessage = message => {
 // Push button
 const pushButton = document.getElementById('push-btn')
 pushButton.onclick = () => askNotificationPermission()
-handlePermission()
 
 // Install Service Worker
 if ('serviceWorker' in navigator) {
