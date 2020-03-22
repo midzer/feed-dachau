@@ -1,4 +1,4 @@
-const version = '1.2.0'
+const version = '1.2.1'
 const cacheName = `feed-dachau-${version}`
 
 self.addEventListener('install', function(event) {
@@ -17,14 +17,16 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.open(cacheName).then(function(cache) {
-      return fetch(event.request).then(function(response) {
-        cache.put(event.request, response.clone());
-        return response;
-      });
-    })
-  );
+  if (event.request.method !== "POST") {
+    event.respondWith(
+      caches.open(cacheName).then(function(cache) {
+        return fetch(event.request).then(function(response) {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      })
+    );
+  }
 });
 
 self.addEventListener('activate', function(event) {
