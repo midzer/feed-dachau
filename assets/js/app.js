@@ -1,3 +1,16 @@
+// urlB64ToUint8Array is a magic function that will encode the base64 public key
+// to Array buffer which is needed by the subscription option
+function urlB64ToUint8Array (base64String) {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
+  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
+  const rawData = atob(base64)
+  const outputArray = new Uint8Array(rawData.length)
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
+
 function ping () {
   ws.send('ping')
   timeout = setTimeout(() => {
@@ -63,7 +76,7 @@ function askNotificationPermission() {
   }
 }
 
-const ws = new WebSocket('wss://feed-dachau.de/api:63409'),
+const ws = new WebSocket('wss://feed-dachau.de/api/ws'),
   feedbox = document.getElementById('feedbox')
 
 let timeout
@@ -121,18 +134,6 @@ ws.onmessage = message => {
       badge.className = 'badge badge-secondary mr-2'
       badge.textContent = 'NEU'
       linkContainer.appendChild(badge)
-
-      // Show notification
-      if ('Notification' in window) {
-        if (Notification.permission === 'granted') {
-          navigator.serviceWorker.ready.then(function(registration) {
-            registration.showNotification('1 neuer Feed', {
-              body: `${hostname} | ${feed.title}`,
-              icon: '../../android-chrome-192x192.png'
-            })
-          })
-        }
-      } 
     }
     linkHeading.appendChild(link)
     linkContainer.appendChild(linkHeading)
@@ -209,7 +210,71 @@ ws.onmessage = message => {
 }
 // Push button
 const pushButton = document.getElementById('push-btn')
-pushButton.onclick = () => askNotificationPermission()
+pushButton.onclick = subscribe
+
+function setSubscribeButton() {
+  pushButton.onclick = subscribe
+  pushButton.innerHTML = pushButton.innerHTML.replace('deaktivieren', 'aktivieren')
+  pushButton.dataset.title = 'Push-Benachrichtigungen aktivieren'
+  pushButton.setAttribute('aria-label', 'Push-Benachrichtigungen aktivieren')
+}
+
+function setUnsubscribeButton() {
+  pushButton.onclick = unsubscribe
+  pushButton.innerHTML = pushButton.innerHTML.replace('aktivieren', 'deaktivieren')
+  pushButton.dataset.title = 'Push-Benachrichtigungen deaktivieren'
+  pushButton.setAttribute('aria-label', 'Push-Benachrichtigungen deaktivieren')
+}
+
+function postJSON (object) {
+  fetch('https://feed-dachau.de/api/push', {
+    method: 'post',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify(object)
+  });
+}
+
+function subscribe() {
+  navigator.serviceWorker.ready.then(function(registration) {
+    const applicationServerKey = urlB64ToUint8Array(
+      'BAIOTVIHDn1kCY89skxRsSrGKBaqIXiVYWQwMSMVEORVcKL2uo4NErbfOUQxJhfXcygNP_xKV7QVH7blt2nKpwo'
+    )
+    const options = { applicationServerKey, userVisibleOnly: true }
+    return registration.pushManager.subscribe(options)
+  }).then(function(subscription) {
+    return postJSON({
+      do: 'subscribe',
+      subscription: JSON.stringify(subscription)
+    })
+  }).catch(function(e) {
+    if (Notification.permission === 'denied') {
+        // The user denied the notification permission which
+        // means we failed to subscribe and the user will need
+        // to manually change the notification permission to
+        // subscribe to push messages
+        console.log('Permission for Notifications was denied');
+    } else {
+        // A problem occurred with the subscription
+        console.log('Unable to subscribe to push.', e);
+    }
+  }).then(setUnsubscribeButton)
+}
+
+function unsubscribe() {
+  navigator.serviceWorker.ready.then(function(registration) {
+    return registration.pushManager.getSubscription()
+  }).then(function(subscription) {
+    return subscription.unsubscribe()
+      .then(function() {
+        return postJSON({
+          do: 'unsubscribe',
+          endpoint: subscription.endpoint
+        })
+      });
+  }).then(setSubscribeButton)
+}
 
 // Install Service Worker
 if ('serviceWorker' in navigator) {
@@ -221,8 +286,16 @@ if ('serviceWorker' in navigator) {
     // It won't be able to control pages unless it's located at the same level or higher than them.
     // *Don't* register service worker file in, e.g., a scripts/ sub-directory!
     // See https://github.com/slightlyoff/ServiceWorker/issues/468
-    navigator.serviceWorker.register('/sw.js').then(function (reg) {
+    
+    navigator.serviceWorker.register('/sw.js')
+    
+    navigator.serviceWorker.ready.then(function(registration) {
       console.log('Service worker registered')
+      return registration.pushManager.getSubscription()
+    }).then(function(subscription) {
+      if (subscription) {
+        setUnsubscribeButton()
+      }
     }).catch(function (e) {
       console.error('Error during service worker registration, possibly cookies are blocked:', e)
     })

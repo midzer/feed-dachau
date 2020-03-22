@@ -1,4 +1,4 @@
-const version = '1.0.2'
+const version = '1.1.0'
 const cacheName = `feed-dachau-${version}`
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -28,5 +28,13 @@ self.addEventListener('fetch', event => {
             return response || fetch(event.request)
         })
     )
-    console.log(event.request.url)
+    //console.log(event.request.url)
+})
+
+self.addEventListener('push', event => {
+  const data = event.data.json();
+  self.registration.showNotification(data.title, {
+    body: data.body,
+    icon: '../../android-chrome-192x192.png'
+  });
 })
