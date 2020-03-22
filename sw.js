@@ -1,4 +1,4 @@
-const version = '1.1.0'
+const version = '1.1.1'
 const cacheName = `feed-dachau-${version}`
 self.addEventListener('install', e => {
   e.waitUntil(

@@ -233,7 +233,7 @@ function postJSON (object) {
       'Content-type': 'application/json'
     },
     body: JSON.stringify(object)
-  });
+  })
 }
 
 function subscribe() {
@@ -247,33 +247,36 @@ function subscribe() {
     return postJSON({
       do: 'subscribe',
       subscription: JSON.stringify(subscription)
-    })
+    }).then(setUnsubscribeButton)
   }).catch(function(e) {
     if (Notification.permission === 'denied') {
-        // The user denied the notification permission which
-        // means we failed to subscribe and the user will need
-        // to manually change the notification permission to
-        // subscribe to push messages
-        console.log('Permission for Notifications was denied');
-    } else {
-        // A problem occurred with the subscription
-        console.log('Unable to subscribe to push.', e);
+      // The user denied the notification permission which
+      // means we failed to subscribe and the user will need
+      // to manually change the notification permission to
+      // subscribe to push messages
+      console.log('Permission for Notifications was denied');
     }
-  }).then(setUnsubscribeButton)
+    else {
+      // A problem occurred with the subscription
+      alert('Fehler beim Aktivieren der Push-Benachrichtigungen')
+      console.log('Unable to subscribe to push.', e);
+    }
+  })
 }
 
 function unsubscribe() {
   navigator.serviceWorker.ready.then(function(registration) {
     return registration.pushManager.getSubscription()
-  }).then(function(subscription) {
+  })
+  .then(function(subscription) {
     return subscription.unsubscribe()
       .then(function() {
         return postJSON({
           do: 'unsubscribe',
           endpoint: subscription.endpoint
-        })
-      });
-  }).then(setSubscribeButton)
+        }).then(setSubscribeButton)
+      })
+  })
 }
 
 // Install Service Worker
