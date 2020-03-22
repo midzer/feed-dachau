@@ -25,6 +25,7 @@ function pong () {
 function createSVG (icon) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.classList.add('icon')
+  svg.classList.add(`icon--${icon}`)
   const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
   use.setAttributeNS(
     'http://www.w3.org/1999/xlink',
@@ -78,24 +79,29 @@ ws.onmessage = message => {
     source.textContent = hostname
 
     // Link
-    const linkContainer = document.createElement('div')
-    const linkHeading = document.createElement('h2')
-    linkHeading.className = 'h6 d-inline'
+    const entry = document.createElement('div')
+    entry.className = 'entry'
+    const linkContainer = document.createElement('span')
     const link = document.createElement('a')
     link.href = feed.link
-    link.textContent = feed.title
+    link.rel = 'noopener nofollow'
     link.dataset.toggle = 'tooltip'
     link.dataset.placement = 'bottom'
     link.title = feed.summary
+    link.appendChild(createSVG('external-link'))
+    const linkHeading = document.createElement('h2')
+    linkHeading.className = 'h6 d-inline'
+    linkHeading.textContent = feed.title
+    link.appendChild(linkHeading)
+    linkContainer.appendChild(link)
     if (feedArray.length === 1) {
       // Show "NEU" badge
       const badge = document.createElement('span')
       badge.className = 'badge badge-secondary mr-2'
       badge.textContent = 'NEU'
-      linkContainer.appendChild(badge)
+      entry.appendChild(badge)
     }
-    linkHeading.appendChild(link)
-    linkContainer.appendChild(linkHeading)
+    entry.appendChild(linkContainer)
 
     // Plus button
     let id = `${formattedDate}-${formattedTime}`
@@ -110,7 +116,7 @@ ws.onmessage = message => {
       plusLink.setAttribute('aria-label', 'Zusammenfassung anzeigen')
       plusLink.setAttribute('aria-controls', `#collapse-${id}`)
       plusLink.appendChild(createSVG('plus'))
-      linkContainer.appendChild(plusLink)
+      entry.appendChild(plusLink)
     }
     // Social share
     if (navigator.share) {
@@ -128,7 +134,7 @@ ws.onmessage = message => {
       }
       
       shareLink.appendChild(createSVG('share-2'))
-      linkContainer.appendChild(shareLink)
+      entry.appendChild(shareLink)
     }
     const facebookLink = document.createElement('a')
     facebookLink.className = 'badge badge-secondary ml-2'
@@ -136,14 +142,14 @@ ws.onmessage = message => {
     facebookLink.rel = 'nofollow noopener'
     facebookLink.setAttribute('aria-label', 'Auf Facebook teilen')
     facebookLink.appendChild(createSVG('facebook'))
-    linkContainer.appendChild(facebookLink)
+    entry.appendChild(facebookLink)
     const twitterLink = document.createElement('a')
     twitterLink.className = 'badge badge-secondary ml-2'
     twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
     twitterLink.rel = 'nofollow noopener'
     twitterLink.setAttribute('aria-label', 'Auf Twitter teilen')
     twitterLink.appendChild(createSVG('twitter'))
-    linkContainer.appendChild(twitterLink)
+    entry.appendChild(twitterLink)
 
     // Collapse
     if (feed.summary) {
@@ -151,10 +157,10 @@ ws.onmessage = message => {
       collapse.className = 'collapse'
       collapse.id = `collapse-${id}`
       collapse.innerHTML = feed.summary
-      linkContainer.appendChild(collapse)
+      entry.appendChild(collapse)
     }
     // Append all to frag
-    frag.insertBefore(linkContainer, frag.childNodes[0])
+    frag.insertBefore(entry, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
