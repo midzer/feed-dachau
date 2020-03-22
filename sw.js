@@ -1,35 +1,47 @@
-const version = '1.1.1'
+const version = '1.2.0'
 const cacheName = `feed-dachau-${version}`
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(cacheName).then(cache => {
-      return cache.addAll([
-        '/',
-        '/index.html',
-        '/assets/css/main.css',
-        '/assets/js/bootstrap-native-v4.min.js',
-        '/assets/js/app.js',
-        '/assets/icons/sprite.svg'
-      ])
-      .then(() => self.skipWaiting())
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open(cacheName).then(function(cache) {
+      return cache.addAll(
+        [
+          '/index.html',
+          '/assets/css/main.css',
+          '/assets/js/bootstrap-native-v4.min.js',
+          '/assets/js/app.js'
+        ]
+      );
     })
-  )
-})
+  );
+});
 
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim())
-})
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.open(cacheName).then(function(cache) {
+      return fetch(event.request).then(function(response) {
+        cache.put(event.request, response.clone());
+        return response;
+      });
+    })
+  );
+});
 
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.open(cacheName)
-        .then(cache => cache.match(event.request, {ignoreSearch: true}))
-        .then(response => {
-            return response || fetch(event.request)
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.filter(function(cacheName) {
+          // Return true if you want to remove this cache,
+          // but remember that caches are shared across
+          // the whole origin
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
         })
-    )
-    //console.log(event.request.url)
-})
+      );
+    })
+  );
+});
 
 self.addEventListener('push', event => {
   const data = event.data.json();
