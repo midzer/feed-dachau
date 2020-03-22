@@ -212,8 +212,9 @@ function subscribe() {
     return postJSON({
       do: 'subscribe',
       subscription: JSON.stringify(subscription)
-    }).then(setUnsubscribeButton)
-  }).catch(function(e) {
+    })
+  }).then(setUnsubscribeButton)
+  .catch(function(e) {
     if (Notification.permission === 'denied') {
       // The user denied the notification permission which
       // means we failed to subscribe and the user will need
@@ -239,8 +240,8 @@ function unsubscribe() {
         return postJSON({
           do: 'unsubscribe',
           endpoint: subscription.endpoint
-        }).then(setSubscribeButton)
-      })
+        })
+      }).then(setSubscribeButton)
   })
 }
 
