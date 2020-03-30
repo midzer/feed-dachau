@@ -36,7 +36,7 @@ function createSVG (icon) {
   return svg
 }
 
-const ws = new WebSocket('wss://feed-dachau.de/api/ws'),
+const ws = new WebSocket('wss://api.feed-dachau.de/ws'),
   feedbox = document.getElementById('feedbox')
 
 let timeout
@@ -192,7 +192,7 @@ function setUnsubscribeButton() {
 }
 
 function postJSON (object) {
-  fetch('https://feed-dachau.de/api/push', {
+  fetch('https://api.feed-dachau.de/push', {
     method: 'post',
     headers: {
       'Content-type': 'application/json'
