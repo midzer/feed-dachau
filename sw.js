@@ -1,4 +1,4 @@
-const version = '1.2.1'
+const version = '1.3.0'
 const cacheName = `feed-dachau-${version}`
 
 self.addEventListener('install', function(event) {
@@ -8,7 +8,6 @@ self.addEventListener('install', function(event) {
         [
           '/index.html',
           '/assets/css/main.css',
-          '/assets/js/bootstrap-native-v4.min.js',
           '/assets/js/app.js'
         ]
       );

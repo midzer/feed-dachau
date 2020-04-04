@@ -78,47 +78,40 @@ ws.onmessage = message => {
     }
     source.textContent = hostname
 
+    // Entry
+    let entry
+    let details
+    if (feed.summary) {
+      entry = document.createElement('summary')
+      details = document.createElement('details')
+      details.className = 'entry'
+      details.textContent = feed.summary
+      details.appendChild(entry)
+    }
+    else {
+      entry = document.createElement('div')
+      entry.className = 'entry'
+    }
+    // Badge
+    if (feedArray.length === 1) {
+      const badge = document.createElement('span')
+      badge.className = 'badge badge-secondary mr-2'
+      badge.textContent = 'NEU'
+      entry.appendChild(badge)
+    }
     // Link
-    const entry = document.createElement('div')
-    entry.className = 'entry'
-    const linkContainer = document.createElement('span')
     const link = document.createElement('a')
     link.href = feed.link
     link.rel = 'noopener nofollow'
-    link.dataset.toggle = 'tooltip'
-    link.dataset.placement = 'bottom'
     link.title = feed.summary
     link.appendChild(createSVG('external-link'))
     const linkHeading = document.createElement('h2')
     linkHeading.className = 'h6 d-inline'
     linkHeading.textContent = feed.title
     link.appendChild(linkHeading)
-    linkContainer.appendChild(link)
-    if (feedArray.length === 1) {
-      // Show "NEU" badge
-      const badge = document.createElement('span')
-      badge.className = 'badge badge-secondary mr-2'
-      badge.textContent = 'NEU'
-      entry.appendChild(badge)
-    }
-    entry.appendChild(linkContainer)
+    entry.appendChild(link)
 
-    // Plus button
-    let id = `${formattedDate}-${formattedTime}`
-    id = id.replace(/[\.:]+/g, '')
-    if (feed.summary) {
-      const plusLink = document.createElement('a')
-      plusLink.className = 'badge badge-secondary ml-2'
-      plusLink.dataset.toggle = 'collapse'
-      plusLink.href = `#collapse-${id}`
-      plusLink.setAttribute('role', 'button')
-      plusLink.setAttribute('aria-expanded', false)
-      plusLink.setAttribute('aria-label', 'Zusammenfassung anzeigen')
-      plusLink.setAttribute('aria-controls', `#collapse-${id}`)
-      plusLink.appendChild(createSVG('plus'))
-      entry.appendChild(plusLink)
-    }
-    // Social share
+    // Social
     if (navigator.share) {
       const shareLink = document.createElement('a')
       shareLink.className = 'badge badge-secondary ml-2'
@@ -132,7 +125,6 @@ ws.onmessage = message => {
         .then(() => console.log('Successful share'))
         .catch((error) => console.log('Error sharing', error))
       }
-      
       shareLink.appendChild(createSVG('share-2'))
       entry.appendChild(shareLink)
     }
@@ -151,26 +143,14 @@ ws.onmessage = message => {
     twitterLink.appendChild(createSVG('twitter'))
     entry.appendChild(twitterLink)
 
-    // Collapse
-    if (feed.summary) {
-      const collapse = document.createElement('div')
-      collapse.className = 'collapse'
-      collapse.id = `collapse-${id}`
-      collapse.innerHTML = feed.summary
-      entry.appendChild(collapse)
-    }
     // Append all to frag
-    frag.insertBefore(entry, frag.childNodes[0])
+    frag.insertBefore(details || entry, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
   })
   window.requestAnimationFrame(() => {
     feedbox.insertBefore(frag, feedbox.childNodes[0])
-
-    // Initialize plusButtons
-    const plusButtons = Array.from(document.querySelectorAll('[data-toggle="collapse"]'))
-    plusButtons.forEach(button => new Collapse(button))
   })
 }
 // Push button
