@@ -40,6 +40,7 @@ const ws = new WebSocket('wss://api.feed-dachau.de/ws'),
   feedbox = document.getElementById('feedbox')
 
 let timeout
+let newCount = 0
 
 ws.onopen = () => setInterval(ping, 30000)
 
@@ -98,6 +99,10 @@ ws.onmessage = message => {
       badge.className = 'badge badge-secondary mr-2'
       badge.textContent = 'NEU'
       entry.appendChild(badge)
+
+      if (navigator.setAppBadge) {
+        navigator.setAppBadge(++newCount)
+      }
     }
     // Link
     const link = document.createElement('a')
@@ -250,3 +255,22 @@ if ('serviceWorker' in navigator) {
     })
   })
 }
+// Set the name of the hidden property and the change event for visibility
+let hidden, visibilityChange
+if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+  hidden = "hidden"
+  visibilityChange = "visibilitychange"
+} else if (typeof document.msHidden !== "undefined") {
+  hidden = "msHidden"
+  visibilityChange = "msvisibilitychange"
+} else if (typeof document.webkitHidden !== "undefined") {
+  hidden = "webkitHidden"
+  visibilityChange = "webkitvisibilitychange"
+}
+// Handle page visibility change   
+document.addEventListener(visibilityChange, function() {
+  if (!document[hidden] && navigator.clearAppBadge) {
+    navigator.clearAppBadge()
+    newCount = 0
+  }
+}, false);
