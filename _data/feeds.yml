@@ -4,6 +4,9 @@
 # Bildung und Wissen
 - url: https://www.dachauer-gaestefuehrer.de/feed
 - url: https://museumsverein-dachau.de/feed/
+# Blogs
+- url: https://ampergai.de/index.xml
+- url: https://www.silberkind.de/blog/feed/
 # Einzelhandel
 - url: https://www.lad-dachau.com/index.php?format=feed&type=rss
 # Garten
@@ -23,7 +26,7 @@
 # Kunst
 - url: https://echoev.de/feed/
 # Dates in the future - url: https://www.dachauerwasserturm.de/index.php?format=feed&type=rss
-- url: http://freiemalgruppe-dachau.de/feed/
+# 404 - url: http://freiemalgruppe-dachau.de/feed/
 # Landwirtschaft
 - url: https://www.wbv-dachau.de/index.php?format=feed&type=rss
 # Musik
@@ -37,7 +40,7 @@
 - url: https://die-partei.net/dachau/feed/
 - url: http://www.fdp-dachau.de/feed/
 - url: http://ju-dah.de/feed/
-- url: https://www.spd-dachau.de/index.xml
+- url: https://teamhartmann2020.de/feed/
 # No feed items - url: https://www.ueb-dachau.de/rss/blog
 - url: https://www.oedp-dachau.de/service/rss/feeds/oedp-blog-rss-feed/
 - url: https://wir-dachau.de/feed
@@ -56,7 +59,7 @@
 - url: http://ksc-attila-dachau.de/?feed=rss2
 - url: https://www.mfc-dachau.de/?format=feed&type=rss
 - url: http://ninpo-dachau.blogspot.com/feeds/posts/default?alt=rss
-- url: http://www.soli-dachau.de/?format=feed&type=rss
+# invalid feed - url: http://www.soli-dachau.de/?format=feed&type=rss
 - url: https://www.svdachau.org/index.php?format=feed&type=rss
 - url: https://skiundbergfreunde-dachau.de/feed/
 # Theater & Bühnenkunst
@@ -70,6 +73,6 @@
 - url: https://www.architekturforum-dachau.de/feed/
 - url: http://wj-dachau.de/feed/
 # Zeitungen
-- url: https://www.merkur.de/lokales/dachau/rssfeed.rdf
-- url: https://rss.sueddeutsche.de/Dachau
-- url: https://www.wochenanzeiger.de/rss/dachau.xml
+# Apparently blocked - url: https://www.merkur.de/lokales/dachau/rssfeed.rdf
+# Apparently blocked - url: https://rss.sueddeutsche.de/Dachau
+# Apparently blocked - url: https://www.wochenanzeiger.de/rss/dachau.xml
