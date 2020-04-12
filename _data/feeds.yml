@@ -42,7 +42,7 @@
 - url: http://ju-dah.de/feed/
 - url: https://teamhartmann2020.de/feed/
 # No feed items - url: https://www.ueb-dachau.de/rss/blog
-- url: https://www.oedp-dachau.de/service/rss/feeds/oedp-blog-rss-feed/
+# Doesnt seem to work with emitter - url: https://www.oedp-dachau.de/service/rss/feeds/oedp-blog-rss-feed/
 # Doesnt seem to work with emitter - url: https://wir-dachau.de/feed
 - url: https://gruene-dachau.de/?feed=rss2
 # Soziale Verbände und Vereine
