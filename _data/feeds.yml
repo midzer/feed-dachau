@@ -8,7 +8,7 @@
 - url: https://ampergai.de/index.xml
 - url: https://www.silberkind.de/blog/feed/
 # Einzelhandel
-- url: https://www.lad-dachau.com/index.php?format=feed&type=rss
+# Doesnt seem to work with emitter - url: https://www.lad-dachau.com/index.php?format=feed&type=rss
 # Garten
 - url: https://ogv-dachau.de/feed/
 # Hilfsorganisationen
