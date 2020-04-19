@@ -8,7 +8,7 @@
 - url: https://ampergai.de/index.xml
 - url: https://www.silberkind.de/blog/feed/
 # Einzelhandel
-# Doesnt seem to work with emitter - url: https://www.lad-dachau.com/index.php?format=feed&type=rss
+- url: https://www.lad-dachau.com/index.php?format=feed&type=rss
 # Garten
 - url: https://ogv-dachau.de/feed/
 # Hilfsorganisationen
@@ -35,15 +35,15 @@
 - url: https://knabenkapelle-dachau.de/feed/
 - url: https://www.liedertafel-dachau.de/feed/
 - url: https://www.stadtkapelle-dachau.de/feed/
-# Doesnt seem to work with emitter - url: https://tolldach.blogspot.com/feeds/posts/default?alt=rss
+- url: https://tolldach.blogspot.com/feeds/posts/default?alt=rss
 # Politische Parteien und Organisationen
 - url: https://die-partei.net/dachau/feed/
 - url: http://www.fdp-dachau.de/feed/
 - url: http://ju-dah.de/feed/
 - url: https://teamhartmann2020.de/feed/
 # No feed items - url: https://www.ueb-dachau.de/rss/blog
-# Doesnt seem to work with emitter - url: https://www.oedp-dachau.de/service/rss/feeds/oedp-blog-rss-feed/
-# Doesnt seem to work with emitter - url: https://wir-dachau.de/feed
+- url: https://www.oedp-dachau.de/service/rss/feeds/oedp-blog-rss-feed/
+- url: https://wir-dachau.de/feed/
 - url: https://gruene-dachau.de/?feed=rss2
 # Soziale Verbände und Vereine
 - url: https://amnesty-dachau.de/feed/
@@ -73,6 +73,6 @@
 - url: https://www.architekturforum-dachau.de/feed/
 - url: http://wj-dachau.de/feed/
 # Zeitungen
-# Apparently blocked - url: https://www.merkur.de/lokales/dachau/rssfeed.rdf
-# Apparently blocked - url: https://rss.sueddeutsche.de/Dachau
-# Apparently blocked - url: https://www.wochenanzeiger.de/rss/dachau.xml
+- url: https://www.merkur.de/lokales/dachau/rssfeed.rdf
+- url: https://rss.sueddeutsche.de/Dachau
+- url: https://www.wochenanzeiger.de/rss/dachau.xml
