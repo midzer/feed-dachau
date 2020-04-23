@@ -10,7 +10,7 @@ banner.style.textAlign = 'center';
 const link = document.createElement('a');
 link.style.fontSize = '3rem';
 link.href = 'http://fff-dachau.de';
-link.textContent = '#Week4Climate';
+link.textContent = '#NetzstreikFürsKlima';
 banner.appendChild(link);
 
 const footer = document.querySelector('footer');
