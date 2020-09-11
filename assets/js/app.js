@@ -36,7 +36,7 @@ function createSVG (icon) {
   return svg
 }
 
-const ws = new WebSocket('wss://api.feed-dachau.de/ws'),
+const ws = new WebSocket('wss://api.feed-dachau.de/ws/'),
   feedbox = document.getElementById('feedbox')
 
 let timeout
