@@ -172,7 +172,7 @@ function setUnsubscribeButton() {
 }
 
 function postJSON (object) {
-  fetch('https://api.feed-dachau.de/push', {
+  fetch('https://api.feed-dachau.de/push/', {
     method: 'post',
     headers: {
       'Content-type': 'application/json'
