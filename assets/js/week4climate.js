@@ -10,7 +10,7 @@ banner.style.textAlign = 'center';
 const link = document.createElement('a');
 link.style.fontSize = '3rem';
 link.href = 'http://fff-dachau.de';
-link.textContent = '#KeinGradWeiter Fr, 25.9. 12 Uhr Thoma-Wiese';
+link.textContent = 'Dachauer Baumwoche 23.-29. November';
 banner.appendChild(link);
 
 const footer = document.querySelector('footer');
