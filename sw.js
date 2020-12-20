@@ -1,4 +1,4 @@
-const version = '1.4.9'
+const version = '1.4.10'
 const cacheName = `feed-dachau-${version}`
 
 self.addEventListener('install', function(event) {
