@@ -13,8 +13,10 @@
   }
 }
 
-.entry {
-  h2 {
-      margin-left: 3px;
-  }
+.entry h2 {
+  margin-left: 3px;
+}
+
+.entry > details {
+  display: inline-block;
 }

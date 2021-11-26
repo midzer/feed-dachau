@@ -32,12 +32,12 @@ function createSVG (icon) {
     'href', 
     `/assets/icons/sprite.svg#${icon}`)
   svg.appendChild(use)
-  
+    
   return svg
 }
 
 const ws = new WebSocket('wss://api.feed-dachau.de/ws/'),
-  feedbox = document.getElementById('feedbox')
+feedbox = document.getElementById('feedbox')
 
 let timeout
 
@@ -79,19 +79,9 @@ ws.onmessage = message => {
     source.textContent = hostname
 
     // Entry
-    let entry
-    let details
-    if (feed.summary) {
-      entry = document.createElement('summary')
-      details = document.createElement('details')
-      details.className = 'entry'
-      details.textContent = feed.summary
-      details.appendChild(entry)
-    }
-    else {
-      entry = document.createElement('div')
-      entry.className = 'entry'
-    }
+    const entry = document.createElement('div')
+    entry.className = 'entry'
+
     // Badge
     if (feedArray.length === 1) {
       const badge = document.createElement('span')
@@ -99,18 +89,21 @@ ws.onmessage = message => {
       badge.textContent = 'NEU'
       entry.appendChild(badge)
     }
-    // Link
-    const link = document.createElement('a')
-    link.href = feed.link
-    link.rel = 'noopener nofollow'
-    link.title = feed.summary
-    link.appendChild(createSVG('external-link'))
+    // Heading
     const linkHeading = document.createElement('h2')
     linkHeading.className = 'h6 d-inline'
     linkHeading.textContent = feed.title
-    link.appendChild(linkHeading)
-    entry.appendChild(link)
-
+    if (feed.summary) {
+      const summary = document.createElement('summary')
+      summary.appendChild(linkHeading)
+      const details = document.createElement('details')
+      details.textContent = feed.summary
+      details.appendChild(summary)
+      entry.appendChild(details)
+    }
+    else {
+      entry.appendChild(linkHeading)
+    }
     // Social
     if (navigator.share) {
       const shareLink = document.createElement('a')
@@ -128,23 +121,31 @@ ws.onmessage = message => {
       shareLink.appendChild(createSVG('share-2'))
       entry.appendChild(shareLink)
     }
-    const facebookLink = document.createElement('a')
-    facebookLink.className = 'badge badge-secondary ml-2'
-    facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${feed.link}`
-    facebookLink.rel = 'nofollow noopener'
-    facebookLink.setAttribute('aria-label', 'Auf Facebook teilen')
-    facebookLink.appendChild(createSVG('facebook'))
-    entry.appendChild(facebookLink)
-    const twitterLink = document.createElement('a')
-    twitterLink.className = 'badge badge-secondary ml-2'
-    twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
-    twitterLink.rel = 'nofollow noopener'
-    twitterLink.setAttribute('aria-label', 'Auf Twitter teilen')
-    twitterLink.appendChild(createSVG('twitter'))
-    entry.appendChild(twitterLink)
-
+    if (feed.link) {
+      const externalLink = document.createElement('a')
+      externalLink.className = 'badge badge-secondary ml-2'
+      externalLink.href = feed.link
+      externalLink.rel = 'nofollow noopener'
+      externalLink.setAttribute('aria-label', 'Seite aufrufen')
+      externalLink.appendChild(createSVG('external-link'))
+      entry.appendChild(externalLink)
+      const facebookLink = document.createElement('a')
+      facebookLink.className = 'badge badge-secondary ml-2'
+      facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${feed.link}`
+      facebookLink.rel = 'nofollow noopener'
+      facebookLink.setAttribute('aria-label', 'Auf Facebook teilen')
+      facebookLink.appendChild(createSVG('facebook'))
+      entry.appendChild(facebookLink)
+      const twitterLink = document.createElement('a')
+      twitterLink.className = 'badge badge-secondary ml-2'
+      twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
+      twitterLink.rel = 'nofollow noopener'
+      twitterLink.setAttribute('aria-label', 'Auf Twitter teilen')
+      twitterLink.appendChild(createSVG('twitter'))
+      entry.appendChild(twitterLink)
+    }
     // Append all to frag
-    frag.insertBefore(details || entry, frag.childNodes[0])
+    frag.insertBefore(entry, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
