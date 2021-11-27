@@ -104,23 +104,7 @@ ws.onmessage = message => {
     else {
       entry.appendChild(linkHeading)
     }
-    // Social
-    if (navigator.share) {
-      const shareLink = document.createElement('a')
-      shareLink.className = 'badge badge-secondary ml-2'
-      shareLink.setAttribute('role', 'button')
-      shareLink.setAttribute('aria-label', 'Beitrag teilen')
-      shareLink.onclick = () => {
-        navigator.share({
-          title: feed.title,
-          url: feed.link
-        })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error))
-      }
-      shareLink.appendChild(createSVG('share-2'))
-      entry.appendChild(shareLink)
-    }
+    // Links
     if (feed.link) {
       const externalLink = document.createElement('a')
       externalLink.className = 'badge badge-secondary ml-2'
@@ -143,6 +127,23 @@ ws.onmessage = message => {
       twitterLink.setAttribute('aria-label', 'Auf Twitter teilen')
       twitterLink.appendChild(createSVG('twitter'))
       entry.appendChild(twitterLink)
+    }
+    // Social
+    if (navigator.share) {
+      const shareLink = document.createElement('a')
+      shareLink.className = 'badge badge-secondary ml-2'
+      shareLink.setAttribute('role', 'button')
+      shareLink.setAttribute('aria-label', 'Beitrag teilen')
+      shareLink.onclick = () => {
+        navigator.share({
+          title: feed.title,
+          url: feed.link
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error))
+      }
+      shareLink.appendChild(createSVG('share-2'))
+      entry.appendChild(shareLink)
     }
     // Append all to frag
     frag.insertBefore(entry, frag.childNodes[0])
