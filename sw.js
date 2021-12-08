@@ -1,4 +1,4 @@
-const version = '1.7.0';
+const version = '1.7.1';
 const cacheName = `feed-dachau-${version}`;
 
 self.addEventListener('install', function(event) {
@@ -48,7 +48,8 @@ self.addEventListener('push', event => {
   const data = event.data.json();
   self.registration.showNotification(data.title, {
     body: data.body,
-    icon: '../../android-chrome-192x192.png'
+    icon: '../../android-chrome-192x192.png',
+    data: data.link
   });
   if (navigator.setAppBadge) {
     navigator.setAppBadge();
@@ -56,9 +57,8 @@ self.addEventListener('push', event => {
 });
 
 self.addEventListener('notificationclick', event => {
-  const data = event.data.json();
+  event.notification.close();
   if (event.action !== 'close') {
-    clients.openWindow(data.link);
+    clients.openWindow(event.notification.data);
   }
-  notification.close();
 });
