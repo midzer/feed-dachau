@@ -1,5 +1,5 @@
-const version = '1.6.1'
-const cacheName = `feed-dachau-${version}`
+const version = '1.7.0';
+const cacheName = `feed-dachau-${version}`;
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -51,6 +51,14 @@ self.addEventListener('push', event => {
     icon: '../../android-chrome-192x192.png'
   });
   if (navigator.setAppBadge) {
-    navigator.setAppBadge()
+    navigator.setAppBadge();
   }
-})
+});
+
+self.addEventListener('notificationclick', event => {
+  const data = event.data.json();
+  if (event.action !== 'close') {
+    clients.openWindow(data.link);
+  }
+  notification.close();
+});
