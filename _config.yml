@@ -33,10 +33,10 @@ sass:
   sourcemap: never
 
 # SEO/Meta settings
-author: midzer
+author: Rohner Solutions
 seo:
   name: Feed Dachau
-  type: News feed
+  type: News
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
