@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /impressum/
+Disallow: /datenschutz/
+
+Sitemap: https://feed-dachau.de/sitemap.xml
