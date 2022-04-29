@@ -1,6 +1,7 @@
 # Behörden
 - url: https://www.landratsamt-dachau.de/aktuelles/pressemitteilungen/newsrss/
 # redirect - url: http://www.polizei.bayern.de/oberbayern_nord/polizei.rss
+- url: https://www.dachauer-land.com/de/aktuelles?format=feed
 # Bildung und Wissen
 - url: https://www.dachauer-gaestefuehrer.de/feed
 - url: https://museumsverein-dachau.de/feed/
