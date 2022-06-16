@@ -22,7 +22,7 @@
 - url: https://jagddachau.de/feed/
 # Jugend
 - url: https://www.bruecke-dachau.de/feed/
-- url: https://freiraum-dachau.de/feed/
+- url: https://freiraum-dachau.de/veranstaltungen/feed/
 - url: https://jugendrat-dachau.de/feed/
 # Kunst
 - url: https://echoev.de/feed/
@@ -51,6 +51,7 @@
 - url: https://amnesty-dachau.de/feed/
 - url: https://dachau-zeigt-zivilcourage.de/feed/
 - url: http://hospizvereindachau.de/feed/
+- url: https://scheresteinpapierev.de/feed/
 # Sportvereine
 - url: https://www.ac-dachau.de/feed/
 - url: http://www.adfc-dachau.de/feed/
