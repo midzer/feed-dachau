@@ -5,6 +5,10 @@
     right: 0;
 }
 
+.octo-arm {
+    transform-origin: 130px 106px;
+}
+
 .github-corner:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
 }
