@@ -9,10 +9,10 @@ Diese Datenschutzerklärung klärt Sie über die Art, den Umfang und Zweck der V
 ## Verantwortlicher
 
 Rohner Solutions\\
-Jakob-Schmid-Straße 38\\
-85221 Dachau\\
+Ulstrup 5\\
+24999 Wees\\
 Deutschland\\
-E-Mailadresse: dennis@rohner.io\\
+E-Mailadresse: dennis<span hidden>.nospam</span>@rohner.io\\
 Link zum Impressum: https://feed-dachau.de/impressum/
 
 ## Arten der verarbeiteten Daten:
