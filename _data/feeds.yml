@@ -6,6 +6,7 @@
 - url: https://www.dachauer-gaestefuehrer.de/feed
 - url: https://museumsverein-dachau.de/feed/
 # Blogs
+- url: https://aaud.noblogs.org/feed/
 - url: https://ampergai.de/index.xml
 - url: https://www.silberkind.de/blog/feed/
 # Einzelhandel
@@ -23,7 +24,7 @@
 # Jugend
 - url: https://www.bruecke-dachau.de/feed/
 - url: https://www.kjr-dachau.de/feed/
-- url: https://freiraum-dachau.de/veranstaltungen/feed/
+- url: https://freiraum-dachau.de/feed/
 - url: https://jugendrat-dachau.de/feed/
 # Kunst
 - url: https://echoev.de/feed/
