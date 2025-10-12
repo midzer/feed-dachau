@@ -9,8 +9,9 @@ Diese Datenschutzerklärung klärt Sie über die Art, den Umfang und Zweck der V
 ## Verantwortlicher
 
 Rohner Solutions\\
-Ulstrup 5\\
-24999 Wees\\
+Dennis Rohner\\
+Münchener Straße 18\\
+85247 Schwabhausen\\
 Deutschland\\
 E-Mailadresse: dennis<span hidden>.nospam</span>@rohner.io\\
 Link zum Impressum: https://feed-dachau.de/impressum/

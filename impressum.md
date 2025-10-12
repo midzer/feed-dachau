@@ -7,8 +7,9 @@ permalink: /impressum/
 ## Angaben gemäß § 5 TMG:
 
 Rohner Solutions\\
-Ulstrup 5\\
-24999 Wees
+Dennis Rohner\\
+Münchener Straße 18\\
+85247 Schwabhausen
 
 Kleinunternehmer i.S.d. § 19 UStG
 
@@ -18,7 +19,6 @@ Dennis Rohner
 
 ## Kontakt:
 
-Telefon: 04631 443 95 87\\
 E-Mail: dennis<span hidden>.nospam</span>@rohner.io
 
 Quelle: [http://www.e-recht24.de](http://www.e-recht24.de)
