@@ -113,20 +113,6 @@ ws.onmessage = message => {
       externalLink.setAttribute('aria-label', 'Seite aufrufen')
       externalLink.appendChild(createSVG('external-link'))
       entry.appendChild(externalLink)
-      const facebookLink = document.createElement('a')
-      facebookLink.className = 'badge badge-secondary ml-2'
-      facebookLink.href = `https://www.facebook.com/sharer/sharer.php?u=${feed.link}`
-      facebookLink.rel = 'nofollow noopener'
-      facebookLink.setAttribute('aria-label', 'Auf Facebook teilen')
-      facebookLink.appendChild(createSVG('facebook'))
-      entry.appendChild(facebookLink)
-      const twitterLink = document.createElement('a')
-      twitterLink.className = 'badge badge-secondary ml-2'
-      twitterLink.href = `https://twitter.com/share?text=${feed.title}&url=${feed.link}`
-      twitterLink.rel = 'nofollow noopener'
-      twitterLink.setAttribute('aria-label', 'Auf Twitter teilen')
-      twitterLink.appendChild(createSVG('twitter'))
-      entry.appendChild(twitterLink)
     }
     // Social
     if (navigator.share) {
