@@ -52,14 +52,23 @@ ws.onmessage = message => {
   const frag = document.createDocumentFragment()
   feedArray.forEach(feed => {
     // Date
-    const date = document.createElement('span')
-    const feedDate = new Date(feed.date)
-    const formattedDate = new Intl.DateTimeFormat('de-DE').format(feedDate)
-    date.textContent = formattedDate
+    const date = document.createElement('span');
+    const feedDate = new Date(feed.date);
+    const today = new Date();
+    const isToday =
+      feedDate.getFullYear() === today.getFullYear() &&
+      feedDate.getMonth() === today.getMonth() &&
+      feedDate.getDate() === today.getDate();
+    const formattedDate = new Intl.DateTimeFormat('de-DE', {
+      day: '2-digit',
+      month: '2-digit'
+    }).format(feedDate);
+    date.textContent = isToday ? 'Heute' : formattedDate;
 
     // Time
     const time = document.createElement('span')
-    const formattedTime = feedDate.toLocaleTimeString('de-De')
+    const formattedTime = feedDate.toLocaleTimeString('de-De',
+      { hour: "2-digit", minute: "2-digit" })
     time.textContent = formattedTime
 
     // Source
@@ -132,10 +141,10 @@ ws.onmessage = message => {
       entry.appendChild(shareLink)
     }
     // Append all to frag
-    frag.insertBefore(entry, frag.childNodes[0])
     frag.insertBefore(source, frag.childNodes[0])
     frag.insertBefore(time, frag.childNodes[0])
     frag.insertBefore(date, frag.childNodes[0])
+    frag.insertBefore(entry, frag.childNodes[0])
   })
   window.requestAnimationFrame(() => {
     feedbox.insertBefore(frag, feedbox.childNodes[0])
