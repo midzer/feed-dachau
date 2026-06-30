@@ -1,4 +1,5 @@
 # Behörden
+- url: https://www.dachau.de/feed/?post_type=aktuelles
 - url: https://www.landratsamt-dachau.de/aktuelles/pressemitteilungen/newsrss/
 # redirect - url: http://www.polizei.bayern.de/oberbayern_nord/polizei.rss
 - url: https://www.dachauer-land.com/de/aktuelles?format=feed
