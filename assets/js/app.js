@@ -265,3 +265,34 @@ document.addEventListener(visibilityChange, function() {
     navigator.clearAppBadge()
   }
 }, false)
+// Install app
+const dialog = document.getElementById('install-app-dialog');
+const trigger = document.getElementById('install-app-trigger');
+
+let deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+});
+
+window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    dialog.close();
+});
+
+trigger.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const { outcome } = await deferredInstallPrompt.userChoice;
+        if (outcome === 'accepted') {
+            deferredInstallPrompt = null;
+        }
+
+        return;
+    }
+
+    dialog.showModal();
+});

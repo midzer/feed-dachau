@@ -1,0 +1,21 @@
+<dialog id="install-app-dialog" aria-labelledby="install-app-title" aria-describedby="install-app-desc">
+    <form method="dialog">
+        <h3 id="install-app-title">App installieren</h3>
+        <p id="install-app-desc">Je nach Browser funktioniert das so:</p>
+        <div class="install-steps">
+            <div class="install-step">
+                <p class="install-step-title">iOS (Safari)</p>
+                <p>
+                    Tippe auf das {% include icon.html icon="share" %} Teilen-Symbol unten und wähle <strong>Zum Startbildschirm hinzufügen</strong>.
+                </p>
+            </div>
+            <div class="install-step">
+                <p class="install-step-title">Android (Chrome / Firefox)</p>
+                <p>
+                    Öffne das Browser-Menü (⋮) oben rechts und tippe auf App installieren oder <strong>Zum Startbildschirm hinzufügen</strong>.
+                </p>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-info w-100">Verstanden</button>
+    </form>
+</dialog>
