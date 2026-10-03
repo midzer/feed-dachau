@@ -7,7 +7,7 @@
     grid-column: span 5;
   }
 
-  @include media-breakpoint-up(sm) {
+  @include media-breakpoint-up(md) {
     grid-template-columns: auto 70px 180px 40px 40px;
 
     > :nth-child(5n+1) {
@@ -17,7 +17,7 @@
 }
 
 .btn-container {
-  @include media-breakpoint-up(sm) {
+  @include media-breakpoint-up(md) {
     text-align: right;
   }
 }
