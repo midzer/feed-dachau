@@ -16,7 +16,8 @@ a {
 }
 
 h2:hover,
-a:hover {
+a:hover,
+details[open] h2 {
     text-decoration: none;
     color: #f90;
 }
