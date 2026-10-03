@@ -52,9 +52,10 @@ ws.onmessage = message => {
   const frag = document.createDocumentFragment()
   feedArray.forEach(feed => {
     // Date
-    const date = document.createElement('span');
-    const feedDate = new Date(feed.date);
-    const today = new Date();
+    const date = document.createElement('span')
+    date.className = 'font-weight-light'
+    const feedDate = new Date(feed.date)
+    const today = new Date()
     const isToday =
       feedDate.getFullYear() === today.getFullYear() &&
       feedDate.getMonth() === today.getMonth() &&
@@ -62,18 +63,19 @@ ws.onmessage = message => {
     const formattedDate = new Intl.DateTimeFormat('de-DE', {
       day: '2-digit',
       month: '2-digit'
-    }).format(feedDate);
-    date.textContent = isToday ? 'Heute' : formattedDate;
+    }).format(feedDate)
+    date.textContent = isToday ? 'Heute' : formattedDate
 
     // Time
     const time = document.createElement('span')
+    time.className = 'font-weight-light'
     const formattedTime = feedDate.toLocaleTimeString('de-De',
       { hour: "2-digit", minute: "2-digit" })
     time.textContent = formattedTime
 
     // Source
     const source = document.createElement('span')
-    source.className = 'text-truncate'
+    source.className = 'font-weight-light text-truncate'
     let hostname
     if (feed.link) {
       const url = new URL(feed.link)
@@ -102,32 +104,24 @@ ws.onmessage = message => {
     const linkHeading = document.createElement('h2')
     linkHeading.className = 'h6 d-inline'
     linkHeading.textContent = feed.title
-    if (feed.summary) {
-      const summary = document.createElement('summary')
-      summary.appendChild(linkHeading)
-      const details = document.createElement('details')
-      details.textContent = feed.summary
-      details.appendChild(summary)
-      entry.appendChild(details)
-    }
-    else {
-      entry.appendChild(linkHeading)
-    }
+    linkHeading.setAttribute('title', 'Details zeigen')
     // Links
     if (feed.link) {
       const externalLink = document.createElement('a')
       externalLink.className = 'badge badge-secondary ml-2'
       externalLink.href = feed.link
       externalLink.rel = 'nofollow noopener'
-      externalLink.setAttribute('aria-label', 'Seite aufrufen')
+      externalLink.setAttribute('title', 'Beitrag öffnen')
+      externalLink.setAttribute('aria-label', 'Beitrag öffnen')
       externalLink.appendChild(createSVG('external-link'))
-      entry.appendChild(externalLink)
+      linkHeading.appendChild(externalLink)
     }
     // Social
     if (navigator.share) {
       const shareLink = document.createElement('a')
       shareLink.className = 'badge badge-secondary ml-2'
       shareLink.setAttribute('role', 'button')
+      shareLink.setAttribute('title', 'Beitrag teilen')
       shareLink.setAttribute('aria-label', 'Beitrag teilen')
       shareLink.onclick = () => {
         navigator.share({
@@ -138,7 +132,25 @@ ws.onmessage = message => {
         .catch((error) => console.log('Error sharing', error))
       }
       shareLink.appendChild(createSVG('share-2'))
-      entry.appendChild(shareLink)
+      linkHeading.appendChild(shareLink)
+    }
+    if (feed.summary) {
+      const summary = document.createElement('summary')
+      summary.appendChild(linkHeading)
+      const details = document.createElement('details')
+      details.textContent = feed.summary
+      details.addEventListener("toggle", () => {
+        if (details.open) {
+          linkHeading.setAttribute('title', 'Details schließen')
+        } else {
+          linkHeading.setAttribute('title', 'Details öffnen')
+        }
+      });
+      details.appendChild(summary)
+      entry.appendChild(details)
+    }
+    else {
+      entry.appendChild(linkHeading)
     }
     // Append all to frag
     frag.insertBefore(source, frag.childNodes[0])
