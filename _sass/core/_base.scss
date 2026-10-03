@@ -9,15 +9,15 @@ main {
     padding: 1rem;
 }
 
-h2,
-a {
-    color: #ffcc00; // #fc0
+
+main > .h6,
+summary {
+    color: #fc0;
     transition: all 0.25s;
 }
 
-h2:hover,
-a:hover,
-details[open] h2 {
+summary:hover,
+details[open] > summary {
     text-decoration: none;
     color: #f90;
 }

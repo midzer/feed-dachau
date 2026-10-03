@@ -1,6 +1,6 @@
 // urlB64ToUint8Array is a magic function that will encode the base64 public key
 // to Array buffer which is needed by the subscription option
-function urlB64ToUint8Array (base64String) {
+function urlB64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
   const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
   const rawData = atob(base64)
@@ -11,18 +11,18 @@ function urlB64ToUint8Array (base64String) {
   return outputArray
 }
 
-function ping () {
+function ping() {
   ws.send('ping')
   timeout = setTimeout(() => {
     console.log('WebSocket connection closed. Please reload page.')
   }, 5000)
 }
 
-function pong () {
+function pong() {
   clearTimeout(timeout)
 }
 
-function createSVG (icon) {
+function createSVG(icon) {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
   svg.classList.add('icon')
   svg.classList.add(`icon--${icon}`)
@@ -36,8 +36,15 @@ function createSVG (icon) {
   return svg
 }
 
+function appendBadge(parent) {
+  const badge = document.createElement('span')
+  badge.className = 'badge badge-pill badge-secondary ml-2'
+  badge.textContent = 'NEU'
+  parent.appendChild(badge)
+}
+
 const ws = new WebSocket('wss://api.feed-dachau.de/ws/'),
-feedbox = document.getElementById('feedbox')
+main = document.querySelector('main')
 
 let timeout
 
@@ -53,7 +60,6 @@ ws.onmessage = message => {
   feedArray.forEach(feed => {
     // Date
     const date = document.createElement('span')
-    date.className = 'font-weight-light'
     const feedDate = new Date(feed.date)
     const today = new Date()
     const isToday =
@@ -64,6 +70,8 @@ ws.onmessage = message => {
       day: '2-digit',
       month: '2-digit'
     }).format(feedDate)
+
+    date.className = isToday ? 'text-white' : 'font-weight-light'
     date.textContent = isToday ? 'Heute' : formattedDate
 
     // Time
@@ -89,37 +97,25 @@ ws.onmessage = message => {
     }
     source.textContent = hostname
 
-    // Entry
-    const entry = document.createElement('div')
-    entry.className = 'entry'
+    // Action buttons
+    const btnContainer = document.createElement('div')
+    btnContainer.className = 'btn-container'
 
-    // Badge
-    if (feedArray.length === 1) {
-      const badge = document.createElement('span')
-      badge.className = 'badge badge-secondary mr-2'
-      badge.textContent = 'NEU'
-      entry.appendChild(badge)
-    }
-    // Heading
-    const linkHeading = document.createElement('h2')
-    linkHeading.className = 'h6 d-inline'
-    linkHeading.textContent = feed.title
-    linkHeading.setAttribute('title', 'Details zeigen')
-    // Links
+    // Link
     if (feed.link) {
       const externalLink = document.createElement('a')
-      externalLink.className = 'badge badge-secondary ml-2'
+      externalLink.className = 'badge badge-primary'
       externalLink.href = feed.link
       externalLink.rel = 'nofollow noopener'
       externalLink.setAttribute('title', 'Beitrag öffnen')
       externalLink.setAttribute('aria-label', 'Beitrag öffnen')
       externalLink.appendChild(createSVG('external-link'))
-      linkHeading.appendChild(externalLink)
+      btnContainer.appendChild(externalLink)
     }
     // Social
     if (navigator.share) {
       const shareLink = document.createElement('a')
-      shareLink.className = 'badge badge-secondary ml-2'
+      shareLink.className = 'badge badge-primary ml-2'
       shareLink.setAttribute('role', 'button')
       shareLink.setAttribute('title', 'Beitrag teilen')
       shareLink.setAttribute('aria-label', 'Beitrag teilen')
@@ -132,35 +128,45 @@ ws.onmessage = message => {
         .catch((error) => console.log('Error sharing', error))
       }
       shareLink.appendChild(createSVG('share-2'))
-      linkHeading.appendChild(shareLink)
+      btnContainer.appendChild(shareLink)
     }
+    // Append all to frag
+    frag.insertBefore(time, frag.childNodes[0])
+    frag.insertBefore(date, frag.childNodes[0])
+    frag.insertBefore(source, frag.childNodes[0])
+    frag.insertBefore(btnContainer, frag.childNodes[0]);
     if (feed.summary) {
       const summary = document.createElement('summary')
-      summary.appendChild(linkHeading)
+      summary.className = 'h6 m-0'
+      summary.textContent = feed.title
+      summary.setAttribute('title', 'Details zeigen')
+      if (feedArray.length === 1) {
+        appendBadge(summary)
+      }
+
       const details = document.createElement('details')
       details.textContent = feed.summary
-      details.addEventListener("toggle", () => {
+      details.addEventListener('toggle', () => {
         if (details.open) {
-          linkHeading.setAttribute('title', 'Details schließen')
+          summary.setAttribute('title', 'Details schließen')
         } else {
-          linkHeading.setAttribute('title', 'Details öffnen')
+          summary.setAttribute('title', 'Details öffnen')
         }
       });
       details.appendChild(summary)
-      entry.appendChild(details)
+      frag.insertBefore(details, frag.childNodes[0])
     }
     else {
-      entry.appendChild(linkHeading)
+      const heading = document.createElement('div')
+      heading.className = 'h6 m-0'
+      heading.textContent = feed.title
+      if (feedArray.length === 1) {
+        appendBadge(heading)
+      }
+      frag.insertBefore(heading, frag.childNodes[0])
     }
-    // Append all to frag
-    frag.insertBefore(source, frag.childNodes[0])
-    frag.insertBefore(time, frag.childNodes[0])
-    frag.insertBefore(date, frag.childNodes[0])
-    frag.insertBefore(entry, frag.childNodes[0])
   })
-  window.requestAnimationFrame(() => {
-    feedbox.insertBefore(frag, feedbox.childNodes[0])
-  })
+  main.insertBefore(frag, main.childNodes[0])
 }
 // Push button
 const pushButton = document.getElementById('push-btn')
@@ -209,7 +215,8 @@ function subscribe() {
       // means we failed to subscribe and the user will need
       // to manually change the notification permission to
       // subscribe to push messages
-      console.log('Permission for Notifications was denied');
+      alert('Genehmigung für Push-Benachrichtigungen wurde abgelehnt.')
+      console.log('Permission for Notifications was denied.');
     }
     else {
       // A problem occurred with the subscription
@@ -259,21 +266,9 @@ if ('serviceWorker' in navigator) {
     })
   })
 }
-// Set the name of the hidden property and the change event for visibility
-let hidden, visibilityChange
-if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
-  hidden = "hidden"
-  visibilityChange = "visibilitychange"
-} else if (typeof document.msHidden !== "undefined") {
-  hidden = "msHidden"
-  visibilityChange = "msvisibilitychange"
-} else if (typeof document.webkitHidden !== "undefined") {
-  hidden = "webkitHidden"
-  visibilityChange = "webkitvisibilitychange"
-}
 // Handle page visibility change
-document.addEventListener(visibilityChange, function() {
-  if (!document[hidden] && navigator.clearAppBadge) {
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden && navigator.clearAppBadge) {
     navigator.clearAppBadge()
   }
 }, false)
