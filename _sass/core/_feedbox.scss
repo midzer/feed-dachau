@@ -1,8 +1,7 @@
-main {
+.feedbox {
   display: grid;
   grid-gap: 0.625rem;
   grid-template-columns: 70px 160px 40px 40px auto;
-  min-height: 850px;
 
   > :nth-child(5n+1) {
     grid-column: span 5;

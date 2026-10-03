@@ -1,188 +1,14 @@
-// urlB64ToUint8Array is a magic function that will encode the base64 public key
-// to Array buffer which is needed by the subscription option
-function urlB64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
-  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
-  const rawData = atob(base64)
-  const outputArray = new Uint8Array(rawData.length)
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i)
-  }
-  return outputArray
-}
-
-function ping() {
-  ws.send('ping')
-  timeout = setTimeout(() => {
-    console.log('WebSocket connection closed. Please reload page.')
-  }, 5000)
-}
-
-function pong() {
-  clearTimeout(timeout)
-}
-
-function createSVG(icon) {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.classList.add('icon')
-  svg.classList.add(`icon--${icon}`)
-  const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
-  use.setAttributeNS(
-    'http://www.w3.org/1999/xlink',
-    'href', 
-    `/assets/icons/sprite.svg#${icon}`)
-  svg.appendChild(use)
-    
-  return svg
-}
-
-function appendBadge(parent) {
-  const badge = document.createElement('span')
-  badge.className = 'badge badge-pill badge-secondary ml-2'
-  badge.textContent = 'NEU'
-  parent.appendChild(badge)
-}
-
-const ws = new WebSocket('wss://api.feed-dachau.de/ws/'),
-main = document.querySelector('main')
-
-let timeout
-
-ws.onopen = () => setInterval(ping, 30000)
-
-ws.onmessage = message => {
-  if (message.data === 'pong') {
-    pong()
-    return
-  }
-  const feedArray = JSON.parse(message.data)
-  const frag = document.createDocumentFragment()
-  feedArray.forEach(feed => {
-    // Date
-    const date = document.createElement('span')
-    const feedDate = new Date(feed.date)
-    const today = new Date()
-    const isToday =
-      feedDate.getFullYear() === today.getFullYear() &&
-      feedDate.getMonth() === today.getMonth() &&
-      feedDate.getDate() === today.getDate();
-    const formattedDate = new Intl.DateTimeFormat('de-DE', {
-      day: '2-digit',
-      month: '2-digit'
-    }).format(feedDate)
-
-    date.className = isToday ? 'text-white' : 'font-weight-light'
-    date.textContent = isToday ? 'Heute' : formattedDate
-
-    // Time
-    const time = document.createElement('span')
-    time.className = 'font-weight-light'
-    const formattedTime = feedDate.toLocaleTimeString('de-De',
-      { hour: "2-digit", minute: "2-digit" })
-    time.textContent = formattedTime
-
-    // Source
-    const source = document.createElement('span')
-    source.className = 'font-weight-light text-truncate'
-    let hostname
-    if (feed.link) {
-      const url = new URL(feed.link)
-      hostname = url.hostname
-    }
-    else {
-      hostname = 'feed-dachau.de'
-    }
-    if (hostname.startsWith('www.')) {
-      hostname = hostname.replace('www.', '')
-    }
-    source.textContent = hostname
-
-    // Action buttons
-    const btnContainer = document.createElement('div')
-    btnContainer.className = 'btn-container'
-
-    // Link
-    if (feed.link) {
-      const externalLink = document.createElement('a')
-      externalLink.className = 'badge badge-primary'
-      externalLink.href = feed.link
-      externalLink.rel = 'nofollow noopener'
-      externalLink.setAttribute('title', 'Beitrag öffnen')
-      externalLink.setAttribute('aria-label', 'Beitrag öffnen')
-      externalLink.appendChild(createSVG('external-link'))
-      btnContainer.appendChild(externalLink)
-    }
-    // Social
-    if (navigator.share) {
-      const shareLink = document.createElement('a')
-      shareLink.className = 'badge badge-primary ml-2'
-      shareLink.setAttribute('role', 'button')
-      shareLink.setAttribute('title', 'Beitrag teilen')
-      shareLink.setAttribute('aria-label', 'Beitrag teilen')
-      shareLink.onclick = () => {
-        navigator.share({
-          title: feed.title,
-          url: feed.link
-        })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error))
-      }
-      shareLink.appendChild(createSVG('share-2'))
-      btnContainer.appendChild(shareLink)
-    }
-    // Append all to frag
-    frag.insertBefore(time, frag.childNodes[0])
-    frag.insertBefore(date, frag.childNodes[0])
-    frag.insertBefore(source, frag.childNodes[0])
-    frag.insertBefore(btnContainer, frag.childNodes[0]);
-    if (feed.summary) {
-      const summary = document.createElement('summary')
-      summary.className = 'h6 m-0'
-      summary.textContent = feed.title
-      summary.setAttribute('title', 'Details zeigen')
-      if (feedArray.length === 1) {
-        appendBadge(summary)
-      }
-
-      const details = document.createElement('details')
-      details.textContent = feed.summary
-      details.addEventListener('toggle', () => {
-        if (details.open) {
-          summary.setAttribute('title', 'Details schließen')
-        } else {
-          summary.setAttribute('title', 'Details öffnen')
-        }
-      });
-      details.appendChild(summary)
-      frag.insertBefore(details, frag.childNodes[0])
-    }
-    else {
-      const heading = document.createElement('div')
-      heading.className = 'h6 m-0'
-      heading.textContent = feed.title
-      if (feedArray.length === 1) {
-        appendBadge(heading)
-      }
-      frag.insertBefore(heading, frag.childNodes[0])
-    }
-  })
-  main.insertBefore(frag, main.childNodes[0])
-}
-// Push button
-const pushButton = document.getElementById('push-btn')
-pushButton.onclick = subscribe
-
 function setSubscribeButton() {
   pushButton.onclick = subscribe
-  pushButton.innerHTML = pushButton.innerHTML.replace('deaktivieren', 'aktivieren')
-  pushButton.dataset.title = 'Push-Benachrichtigungen aktivieren'
+  pushButton.textContent = pushButton.textContent.replace('deaktivieren', 'aktivieren')
+  pushButton.title = 'Push-Benachrichtigungen aktivieren'
   pushButton.setAttribute('aria-label', 'Push-Benachrichtigungen aktivieren')
 }
 
 function setUnsubscribeButton() {
   pushButton.onclick = unsubscribe
-  pushButton.innerHTML = pushButton.innerHTML.replace('aktivieren', 'deaktivieren')
-  pushButton.dataset.title = 'Push-Benachrichtigungen deaktivieren'
+  pushButton.textContent = pushButton.textContent.replace('aktivieren', 'deaktivieren')
+  pushButton.title = 'Push-Benachrichtigungen deaktivieren'
   pushButton.setAttribute('aria-label', 'Push-Benachrichtigungen deaktivieren')
 }
 
@@ -266,12 +92,10 @@ if ('serviceWorker' in navigator) {
     })
   })
 }
-// Handle page visibility change
-document.addEventListener('visibilitychange', function() {
-  if (!document.hidden && navigator.clearAppBadge) {
-    navigator.clearAppBadge()
-  }
-}, false)
+// Push button
+const pushButton = document.getElementById('push-btn')
+pushButton.onclick = subscribe
+
 // Install app
 const dialog = document.getElementById('install-app-dialog');
 const trigger = document.getElementById('install-app-trigger');

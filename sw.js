@@ -8,11 +8,13 @@ self.addEventListener('install', function(event) {
         [
           '/index.html',
           '/assets/css/main.css',
+          '/assets/js/feed.js',
           '/assets/js/app.js'
         ]
       );
     })
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('fetch', function(event) {
@@ -40,15 +42,29 @@ self.addEventListener('activate', function(event) {
             return caches.delete(name);
           })
       );
+    }).then(function() {
+      return self.clients.claim();
     })
   );
 });
 
 self.addEventListener('push', event => {
   const data = event.data.json();
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/android-chrome-192x192.png',
+      data: data.link
+    }).then(() => {
+      if (navigator.setAppBadge) {
+        return navigator.setAppBadge();
+      }
+    })
+  );
   self.registration.showNotification(data.title, {
     body: data.body,
-    icon: '../../android-chrome-192x192.png',
+    icon: '/android-chrome-192x192.png',
     data: data.link
   });
   if (navigator.setAppBadge) {
@@ -58,7 +74,23 @@ self.addEventListener('push', event => {
 
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  if (event.action !== 'close') {
-    clients.openWindow(event.notification.data);
+
+  if (navigator.clearAppBadge) {
+    event.waitUntil(navigator.clearAppBadge());
+  }
+
+  if (!event.action || event.action === '' || event.action === 'open') {
+    event.waitUntil(
+      clients.matchAll({ type: 'window' }).then(clientList => {
+        for (const client of clientList) {
+          if (client.url.includes(new URL(event.notification.data)) && 'focus' in client) {
+            return client.focus();
+          }
+        }
+        if (clients.openWindow) {
+          return clients.openWindow(event.notification.data);
+        }
+      })
+    );
   }
 });

@@ -28,7 +28,8 @@ Modify to fit your needs
 
 * _config.yml (title, email, description, url, repo, SEO)
 * _data/feeds.yml (this data generates feeds.json which will be fetched by the backend)
-* assets/js/app.js (WebSocket URL = your backend)
+* assets/js/feed.js (WEBSOCKET_URL = your backend API)
+* assets/js/app.js
 * impressum.md
 * datenschutz.md
 * site.webmanifest

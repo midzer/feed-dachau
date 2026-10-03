@@ -12,15 +12,17 @@ layout: default
 
         {% include github-corner.html %}
 
-        <main class="container rounded my-3">
+        {% if page.name == 'index.md' %}
+        <main class="container rounded feedbox my-3">
+        {% else %}
+        <main class="container roundedmy-3">
+        {% endif %}
             {{ content }}
         </main>
 
         {% include footer.html %}
 
         {% include install-app.html %}
-
-        {% include scripts.html %}
 
     </body>
 
