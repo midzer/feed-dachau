@@ -1,4 +1,4 @@
-const version = '2.0.3';
+const version = '2.0.4';
 const cacheName = `feed-dachau-${version}`;
 
 self.addEventListener('install', function(event) {
@@ -6,7 +6,6 @@ self.addEventListener('install', function(event) {
     caches.open(cacheName).then(function(cache) {
       return cache.addAll(
         [
-          '/index.html',
           '/assets/css/main.css',
           '/assets/js/feed.js',
           '/assets/js/app.js'
