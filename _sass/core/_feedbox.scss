@@ -1,20 +1,16 @@
 #feedbox {
   display: grid;
   grid-gap: 0.5rem;
-  grid-template-columns: auto 45px 45px 135px;
+  grid-template-columns: auto 50px 50px 200px;
   min-height: 850px;
 
   @include media-breakpoint-down(sm) {
-      grid-template-columns: 45px 45px 135px;
+      grid-template-columns: 50px 50px min-content;
 
       > .entry {
           grid-column: span 4;
       }
   }
-}
-
-.entry h2 {
-  margin-left: 3px;
 }
 
 .entry > details {
