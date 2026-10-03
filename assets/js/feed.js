@@ -1,4 +1,4 @@
-let ws, timeout, main, reconnectAttempts = 0
+let ws, timeout, pingInterval, main, reconnectAttempts = 0
 
 const WEBSOCKET_URL = 'wss://api.feed-dachau.de/ws/'
 const MAX_RECONNECT_ATTEMPTS = 5
@@ -13,6 +13,10 @@ function ping() {
             scheduleReconnect()
         }, 10000)
     }
+}
+
+function pong() {
+    clearTimeout(timeout)
 }
 
 function cleanupWebSocket() {
@@ -52,6 +56,7 @@ function initWebSocket() {
     ws.onopen = () => {
         console.log('WebSocket connected')
         reconnectAttempts = 0
+        clearInterval(pingInterval)
         pingInterval = setInterval(ping, 30000)
         ping()
     }
@@ -106,12 +111,12 @@ document.addEventListener('visibilitychange', () => {
         clearInterval(pingInterval)
     }
     else {
-        // Bei Sichtbarkeit sofort prüfen und ggf. reconnecten
         if (!ws || ws.readyState !== WebSocket.OPEN) {
             reconnectAttempts = 0
             initWebSocket()
         }
         else {
+            clearInterval(pingInterval)
             pingInterval = setInterval(ping, 30000)
         }
         if (navigator.clearAppBadge) {
